@@ -19,14 +19,37 @@ const { verifyToken } = require('../middlewares/authJWT')
  *        password:
  *          type: string
  *          description: The user password
+ *        webAddress:
+ *          type: string
+ *          description: The user web address
+ *        logo:
+ *          type: string
+ *          description: The user logo
+ *        nit:
+ *          type: number
+ *          description: The user nit
+ *        address:
+ *          type: string
+ *          description: The user address
+ *        businessName:
+ *          type: string
+ *          description: The user businessName
+ *        phone:
+ *          type: number
+ *          description: The user phone
  *      required:
- *        - userName
+ *        - name
  *        - email
  *        - password
  *      example:
  *        name: Alan Kay
  *        email: alan@example.com
  *        password: password123
+ *        webAddress: www.example.com
+ *        nit: 654321
+ *        address: Av98 98 98
+ *        businessName: example
+ *        phone: 123456
  */
 
 /**
@@ -51,6 +74,29 @@ const { verifyToken } = require('../middlewares/authJWT')
  *        description: Server error
  */
 router.post("/signup", userCtrl.signUp)
+
+/**
+ * @swagger
+ * /user/:
+ *  put:
+ *    summary: Create a new user
+ *    tags: [User]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/User'
+ *    responses:
+ *      200:
+ *        description: New user created
+ *      400:
+ *        description: Something went wrong
+ *      500:
+ *        description: Server error
+ */
+router.put("/", [verifyToken, userCtrl.editUser])
 
 /**
  * @swagger
@@ -98,7 +144,7 @@ router.post("/login", userCtrl.logIn)
  *        name: jwt-token
  *        schema:
  *          type: string
- *          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ1OTIyNTY4fQ.rkIDY2KI-n0VJ8d77cyMA75SYKhNxQleNo1Stfyxhyc
+ *          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMjE5NTFkMjhhZjc5ZTFkYmZmYTJhOCIsImlhdCI6MTY0NjM2ODA1Nn0.lG9s_sMGmnVJfp3TDJpbmSmZfxcu0WKHRRM5UCEqV-Y
  *        required: true
  *    responses:
  *      200:

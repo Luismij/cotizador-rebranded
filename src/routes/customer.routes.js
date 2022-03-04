@@ -16,16 +16,34 @@ const { verifyToken } = require('../middlewares/authJWT')
  *        email:
  *          type: string
  *          description: The customer email
+ *        webAddress:
+ *          type: string
+ *          description: The customer web address
+ *        logo:
+ *          type: string
+ *          description: The customer logo
+ *        nit:
+ *          type: number
+ *          description: The customer nit
+ *        address:
+ *          type: string
+ *          description: The customer address
+ *        businessName:
+ *          type: string
+ *          description: The customer businessName
  *        phone:
  *          type: number
  *          description: The customer phone
  *      required:
- *        - userId
  *        - name
  *      example:
- *        name: Andres Rios
- *        email: andres@example.com
- *        phone: 1111111
+ *        name: Alancito Kay
+ *        email: alan@example.com
+ *        webAddress: www.example.com
+ *        nit: 654321
+ *        address: Av98 98 98
+ *        businessName: example
+ *        phone: 123456
  */
 
 /**
@@ -69,7 +87,7 @@ router.post("/", [verifyToken, customerCtrl.createCustomer])
  *        name: jwt-token
  *        schema:
  *          type: string
- *          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ1OTIyNTY4fQ.rkIDY2KI-n0VJ8d77cyMA75SYKhNxQleNo1Stfyxhyc
+ *          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyMjE5NTFkMjhhZjc5ZTFkYmZmYTJhOCIsImlhdCI6MTY0NjM2ODA1Nn0.lG9s_sMGmnVJfp3TDJpbmSmZfxcu0WKHRRM5UCEqV-Y
  *        required: true
  *    responses:
  *      200:
@@ -108,6 +126,36 @@ router.get("/", [verifyToken, customerCtrl.getCustomersByUserId])
  *        description: Server error
  */
 router.get("/:id", [verifyToken, customerCtrl.getCustomerById])
+
+/**
+ * @swagger
+ * /customer/:
+ *  put:
+ *    summary: Edit a customer
+ *    tags: [Customer]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/Customer'
+ *    parameters:
+ *    - in: header
+ *      name: jwt-token
+ *      schema:
+ *        type: string
+ *        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ1OTIyNTY4fQ.rkIDY2KI-n0VJ8d77cyMA75SYKhNxQleNo1Stfyxhyc
+ *      required: true
+ *    responses:
+ *      200:
+ *        description: New customer created
+ *      400:
+ *        description: Something went wrong
+ *      500:
+ *        description: Server error
+ */
+ router.put("/", [verifyToken, customerCtrl.editCustomer])
 
 /**
  * @swagger

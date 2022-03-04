@@ -7,15 +7,15 @@ const { verifyToken } = require('../middlewares/authJWT')
  * @swagger
  * components:
  *  schemas:
- *    Customer:
+ *    Marking:
  *      type: object
  *      properties:
  *        name:
  *          type: string
  *          description: The customer name
- *        email:
- *          type: string
- *          description: The customer email
+ *        inks:
+ *          type: array
+ *          description: inks
  *        phone:
  *          type: number
  *          description: The customer phone

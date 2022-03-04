@@ -1,6 +1,5 @@
-const pool = require('../utils/database')
-const customerQueries = require('../querys/customer.querys');
 const checkParams = require('../utils/checkParams')
+const Customer = require('../models/Customer');
 
 /**
  * Function that allows to create a new customer.
@@ -8,17 +7,17 @@ const checkParams = require('../utils/checkParams')
  */
 const createCustomer = async (req, res) => {
   const { userId } = req
-  const { name, email, phone } = req.body
 
   const correct = checkParams(['name'], req.body)
   if (!correct) return res.status(400).json({ message: 'Missing parameters' })
-  console.log(customerQueries.createCustomerQuery(userId, name, email, phone));
+
   try {
-    await pool.query(customerQueries.createCustomerQuery(userId, name, email, phone));
+    const newCustomer = new Customer({ ...req.body, userId })
+    await newCustomer.save()
+    return res.status(200).json({ message: 'Customer created!' })
   } catch (error) {
     return res.status(400).json({ message: 'Something went wrong' })
   }
-  return res.status(200).json({ message: 'Customer created!' })
 }
 
 /**
@@ -29,7 +28,7 @@ const getCustomersByUserId = async (req, res) => {
   const { userId } = req
 
   try {
-    const customers = await pool.query(customerQueries.getCustomersByuserIdQuery(userId))
+    const customers = await Customer.find({ userId }).exec()
     return res.json(customers);
   } catch (error) {
     return res.status(400).json(error.message)
@@ -37,7 +36,7 @@ const getCustomersByUserId = async (req, res) => {
 }
 
 /**
- * Function to get all customers of a user
+ * Function to get a customer
  * @returns {Array} customer array
  */
 const getCustomerById = async (req, res) => {
@@ -48,10 +47,29 @@ const getCustomerById = async (req, res) => {
   if (!correct) return res.status(400).json({ message: 'Missing parameters' })
 
   try {
-    const customers = (await pool.query(customerQueries.getCustomerByIdQuery(id, userId)))[0]
-    return res.json(customers);
+    const customer = await Customer.findOne({ _id: id, userId })
+    if (!customer) return res.status(400).json({ message: 'Customer not found' })
+    return res.json(customer);
   } catch (error) {
     return res.status(400).json(error.message)
+  }
+}
+
+/**
+ * Function that allows to edit a customer
+ * @returns message
+ */
+const editCustomer = async (req, res) => {
+  const customer = req.body
+  const { userId } = req
+
+  try {
+    const { modifiedCount } = await Customer.updateOne({ _id: customer._id, userId }, { $set: customer }).exec()
+    if (modifiedCount === 0) return res.status(400).json({ message: 'Customer not found' })
+    return res.status(200).json({ message: 'Customer successfully edited' })
+  } catch (error) {
+    console.error(error);
+    return res.status(400).json({ message: 'Something went wrong' })
   }
 }
 
@@ -67,9 +85,9 @@ const deleteCustomerById = async (req, res) => {
   if (!correct) return res.status(400).json({ message: 'Missing parameters' })
 
   try {
-    const result = (await pool.query(customerQueries.deleteCustomerByIdQuery(id, userId)))
-    if (result.affectedRows === 0) return res.status(400).json({ message: 'Customer not found' });
-    return res.status(200).json({ message: 'Client removed successfully' });
+    const { deletedCount } = await Customer.remove({ _id: id, userId }).exec()
+    if (deletedCount === 0) return res.status(400).json({ message: 'Customer not found' })
+    return res.status(200).json({ message: 'Customer removed successfully' });
   } catch (error) {
     return res.status(400).json(error.message)
   }
@@ -79,5 +97,6 @@ module.exports = {
   createCustomer,
   getCustomersByUserId,
   getCustomerById,
+  editCustomer,
   deleteCustomerById
 }

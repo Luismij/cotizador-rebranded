@@ -1,5 +1,4 @@
-const pool = require('../utils/database')
-const productQueries = require('../querys/product.query');
+const Product = require('../models/Product');
 
 /**
  * Function that allows to create a new customer.
@@ -7,7 +6,7 @@ const productQueries = require('../querys/product.query');
  */
 const getProducts = async (req, res) => {
   try {
-    const products = await pool.query(productQueries.getProductsQuery());
+    const products = await Product.find()
     return res.status(200).json(products)
   } catch (error) {
     console.log(error);

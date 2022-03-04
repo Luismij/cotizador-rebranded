@@ -4,15 +4,13 @@ const http = require('http')
 const morgan = require('morgan')
 const { port, swaggerSpec } = require('./config')
 const routes = require('./routes')
-const setupDatabase = require('./utils/setupDatabase')
 const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
+require('./utils/database')
 
 const app = express()
 
 const server = http.createServer(app)
-
-setupDatabase()
 
 app.use(cors())
 app.use(express.json())
