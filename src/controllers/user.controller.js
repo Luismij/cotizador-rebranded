@@ -35,7 +35,7 @@ const logIn = async (req, res) => {
   if (!correct) return res.status(400).json({ message: 'Missing parameters' })
 
   try {
-    const user = await User.findOne({ email }, '-_id').exec()
+    const user = await User.findOne({ email }).exec()
     if (!user) return res.status(400).json({ message: 'Wrong email' })
     const match = await bcrypt.compare(password, user.password)
     if (!match) return res.status(401).json({ message: "Wrong password" })
@@ -51,10 +51,10 @@ const logIn = async (req, res) => {
  * @returns {Object} user info or error message
  */
 const logInJWT = async (req, res) => {
-  const userId = req.userId;
+  const { userId } = req;
 
   try {
-    let user = await User.findById(userId, '-_id').exec()
+    const user = await User.findById(userId, '-_id').exec()
     if (!user) return res.status(400).json({ message: 'User not found' })
     return res.status(200).json(user)
   } catch (error) {
