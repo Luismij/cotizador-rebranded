@@ -1,4 +1,3 @@
-const checkParams = require('../utils/checkParams')
 const Customer = require('../models/Customer');
 
 /**
@@ -7,9 +6,6 @@ const Customer = require('../models/Customer');
  */
 const createCustomer = async (req, res) => {
   const { userId } = req
-
-  const correct = checkParams(['name'], req.body)
-  if (!correct) return res.status(400).json({ message: 'Missing parameters' })
 
   try {
     const newCustomer = new Customer({ ...req.body, userId })
@@ -42,9 +38,6 @@ const getCustomersByUserId = async (req, res) => {
 const getCustomerById = async (req, res) => {
   const { userId } = req
   const { id } = req.params
-
-  const correct = checkParams(['id'], req.params)
-  if (!correct) return res.status(400).json({ message: 'Missing parameters' })
 
   try {
     const customer = await Customer.findOne({ _id: id, userId })
@@ -81,11 +74,8 @@ const deleteCustomerById = async (req, res) => {
   const { userId } = req
   const { id } = req.params
 
-  const correct = checkParams(['id'], req.params)
-  if (!correct) return res.status(400).json({ message: 'Missing parameters' })
-
   try {
-    const { deletedCount } = await Customer.remove({ _id: id, userId }).exec()
+    const { deletedCount } = await Customer.deleteOne({ _id: id, userId }).exec()
     if (deletedCount === 0) return res.status(400).json({ message: 'Customer not found' })
     return res.status(200).json({ message: 'Customer removed successfully' });
   } catch (error) {

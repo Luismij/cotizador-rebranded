@@ -44,7 +44,25 @@ const getMarkings = async (req, res) => {
   }
 }
 
+/**
+ * Function that allows to get the markings of a user.
+ * @returns {Array || Object} Array of markings or error message
+ */
+const deleteMarking = async (req, res) => {
+  const { userId } = req
+  const { id } = req.params
+
+  try {
+    const result = await Marking.deleteOne({ _id: id, userId }).exec()
+    if (result.deletedCount === 0) return res.status(400).json({ message: 'Marking not found' })
+    return res.status(200).json({ message: 'Marking removed successfully', result })
+  } catch (error) {
+    return res.status(400).json({ message: 'Something went wrong', error })
+  }
+}
+
 module.exports = {
   createMarking,
-  getMarkings
+  getMarkings,
+  deleteMarking
 }

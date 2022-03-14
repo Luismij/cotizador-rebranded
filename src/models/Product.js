@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 
 const ProductSchema = new Schema({
-  id:{
+  id: {
     type: Number,
   },
   internalComment: {
@@ -10,11 +10,19 @@ const ProductSchema = new Schema({
   sku: {
     type: String,
   },
-  price: {
-    type: Number,
-  },
+  prices: [
+    {
+      price: {
+        type: Number,
+        required: true
+      },
+      description: {
+        type: String
+      }
+    }
+  ],
   photo: {
-    type: String,
+    type: String
   },
   categoryId: {
     type: Number,

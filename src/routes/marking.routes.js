@@ -30,17 +30,17 @@ const { verifyToken } = require('../middlewares/authJWT')
 
 /**
  * @swagger
- * /customer/:
+ * /marking/:
  *  post:
- *    summary: Create a new customer
- *    tags: [Customer]
+ *    summary: Create a new marking
+ *    tags: [Marking]
  *    requestBody:
  *      required: true
  *      content:
  *        application/json:
  *          schema:
  *            type: object
- *            $ref: '#/components/schemas/Customer'
+ *            $ref: '#/components/schemas/Marking'
  *    parameters:
  *    - in: header
  *      name: jwt-token
@@ -60,17 +60,10 @@ router.post("/", [verifyToken, markingCtrl.createMarking])
 
 /**
  * @swagger
- * /customer/:
- *  post:
- *    summary: Create a new customer
- *    tags: [Customer]
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            $ref: '#/components/schemas/Customer'
+ * /marking/:
+ *  get:
+ *    summary: Get markings of a user
+ *    tags: [Marking]
  *    parameters:
  *    - in: header
  *      name: jwt-token
@@ -80,12 +73,41 @@ router.post("/", [verifyToken, markingCtrl.createMarking])
  *      required: true
  *    responses:
  *      200:
- *        description: New customer created
+ *        description: New marking created
  *      400:
  *        description: Something went wrong
  *      500:
  *        description: Server error
  */
  router.get("/", [verifyToken, markingCtrl.getMarkings])
+
+ /**
+ * @swagger
+ * /marking/{id}:
+ *  delete:
+ *    summary: Delete a marking
+ *    tags: [Marking]
+ *    parameters:
+ *    - in: header
+ *      name: jwt-token
+ *      schema:
+ *        type: string
+ *        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ1OTIyNTY4fQ.rkIDY2KI-n0VJ8d77cyMA75SYKhNxQleNo1Stfyxhyc
+ *      required: true
+ *    - in: path
+ *      name: id
+ *      schema:
+ *        type: string
+ *        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *      required: true
+ *    responses:
+ *      200:
+ *        description: New marking created
+ *      400:
+ *        description: Something went wrong
+ *      500:
+ *        description: Server error
+ */
+  router.delete("/:id", [verifyToken, markingCtrl.deleteMarking])
 
 module.exports = router;
