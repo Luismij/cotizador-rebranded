@@ -50,7 +50,7 @@ const { verifyToken } = require('../middlewares/authJWT')
  *      required: true
  *    responses:
  *      200:
- *        description: New customer created
+ *        description: New marking created
  *      400:
  *        description: Something went wrong
  *      500:
@@ -73,19 +73,19 @@ router.post("/", [verifyToken, markingCtrl.createMarking])
  *      required: true
  *    responses:
  *      200:
- *        description: New marking created
+ *        description: Get markings successfully
  *      400:
  *        description: Something went wrong
  *      500:
  *        description: Server error
  */
- router.get("/", [verifyToken, markingCtrl.getMarkings])
+router.get("/", [verifyToken, markingCtrl.getMarkings])
 
- /**
+/**
  * @swagger
  * /marking/{id}:
- *  delete:
- *    summary: Delete a marking
+ *  get:
+ *    summary: Get marking of a user
  *    tags: [Marking]
  *    parameters:
  *    - in: header
@@ -102,12 +102,72 @@ router.post("/", [verifyToken, markingCtrl.createMarking])
  *      required: true
  *    responses:
  *      200:
- *        description: New marking created
+ *        description: Get markings successfully
  *      400:
  *        description: Something went wrong
  *      500:
  *        description: Server error
  */
-  router.delete("/:id", [verifyToken, markingCtrl.deleteMarking])
+router.get("/:id", [verifyToken, markingCtrl.getMarking])
+
+/**
+ * @swagger
+ * /marking/:
+ *  put:
+ *    summary: Update a marking
+ *    tags: [Marking]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/Marking'
+ *    parameters:
+ *    - in: header
+ *      name: jwt-token
+ *      schema:
+ *        type: string
+ *        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ1OTIyNTY4fQ.rkIDY2KI-n0VJ8d77cyMA75SYKhNxQleNo1Stfyxhyc
+ *      required: true
+ *    responses:
+ *      200:
+ *        description: Marking edited successfully
+ *      400:
+ *        description: Something went wrong
+ *      500:
+ *        description: Server error
+ */
+router.put("/", [verifyToken, markingCtrl.editMarking])
+
+
+/**
+* @swagger
+* /marking/{id}:
+*  delete:
+*    summary: Delete a marking
+*    tags: [Marking]
+*    parameters:
+*    - in: header
+*      name: jwt-token
+*      schema:
+*        type: string
+*        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ1OTIyNTY4fQ.rkIDY2KI-n0VJ8d77cyMA75SYKhNxQleNo1Stfyxhyc
+*      required: true
+*    - in: path
+*      name: id
+*      schema:
+*        type: string
+*        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+*      required: true
+*    responses:
+*      200:
+*        description: New marking created
+*      400:
+*        description: Something went wrong
+*      500:
+*        description: Server error
+*/
+router.delete("/:id", [verifyToken, markingCtrl.deleteMarking])
 
 module.exports = router;

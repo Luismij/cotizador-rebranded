@@ -45,6 +45,50 @@ const getMarkings = async (req, res) => {
 }
 
 /**
+ * Function that allows to get a marking of a user.
+ * @returns {Object} Marking or error message
+ */
+const getMarking = async (req, res) => {
+  const { userId } = req
+  const { id } = req.params
+
+  try {
+    const marking = await Marking.findOne({ userId, _id: id }).exec()
+    return res.status(200).json(marking)
+  } catch (error) {
+    return res.status(400).json({ message: 'Something went wrong', error })
+  }
+}
+
+/**
+ * Function that allows to edit a marking.
+ * @returns {Object} Success message or error message
+ */
+const editMarking = async (req, res) => {
+  const { _id, inks } = req.body
+  const { userId } = req
+
+  // Check that all parameters are in the body
+  const correct = checkParams(['name', 'inks'], req.body)
+  if (!correct) return res.status(400).json({ message: 'Missing parameters' })
+  for (const ink of inks) {
+    const correct1 = checkParams(['minTotalPrice', 'outOfRangePrice', 'ranges'], ink)
+    if (!correct1) return res.status(400).json({ message: 'Missing parameters' })
+    for (const range of ink.ranges) {
+      const correct2 = checkParams(['min', 'max', 'price'], range)
+      if (!correct2) return res.status(400).json({ message: 'Missing parameters' })
+    }
+  }
+  try {
+    const result = await Marking.updateOne({ userId, _id }, req.body).exec()
+    console.log(result);
+    return res.status(200).json({ message: 'Marking updated successfully' })
+  } catch (error) {
+    return res.status(400).json({ message: 'Something went wrong', error })
+  }
+}
+
+/**
  * Function that allows to get the markings of a user.
  * @returns {Array || Object} Array of markings or error message
  */
@@ -64,5 +108,7 @@ const deleteMarking = async (req, res) => {
 module.exports = {
   createMarking,
   getMarkings,
+  getMarking,
+  editMarking,
   deleteMarking
 }
