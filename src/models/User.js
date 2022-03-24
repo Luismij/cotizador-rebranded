@@ -31,6 +31,28 @@ const UserSchema = new Schema({
   },
   phone: {
     type: Number,
+  },
+  discount: {
+    outOfRangeDiscount: {
+      type: Number,
+      required: true,
+    },
+    ranges: [
+      {
+        min: {
+          type: Number,
+          required: true
+        },
+        max: {
+          type: Number,
+          required: true
+        },
+        discount: {
+          type: Number,
+          required: true
+        }
+      }
+    ]
   }
 },
   {

@@ -7,18 +7,18 @@ const { verifyToken } = require('../middlewares/authJWT')
  * @swagger
  * components:
  *  schemas:
- *    Customer:
+ *    Product:
  *      type: object
  *      properties:
  *        name:
  *          type: string
- *          description: The customer name
+ *          description: The product name
  *        email:
  *          type: string
- *          description: The customer email
+ *          description: The product email
  *        phone:
  *          type: number
- *          description: The customer phone
+ *          description: The product phone
  *      required:
  *        - userId
  *        - name
@@ -30,17 +30,10 @@ const { verifyToken } = require('../middlewares/authJWT')
 
 /**
  * @swagger
- * /customer/:
- *  post:
- *    summary: Create a new customer
- *    tags: [Customer]
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            $ref: '#/components/schemas/Customer'
+ * /product/:
+ *  get:
+ *    summary: Get products list
+ *    tags: [Product]
  *    parameters:
  *    - in: header
  *      name: jwt-token
@@ -50,12 +43,28 @@ const { verifyToken } = require('../middlewares/authJWT')
  *      required: true
  *    responses:
  *      200:
- *        description: New customer created
+ *        description: Get products list
  *      400:
  *        description: Something went wrong
  *      500:
  *        description: Server error
  */
- router.get("/", [verifyToken, productCtrl.getProducts])
+router.get("/", [verifyToken, productCtrl.getProducts])
+
+/**
+* @swagger
+* /product/update:
+*  get:
+*    summary: Update product list
+*    tags: [Product]
+*    responses:
+*      200:
+*        description: Updated product list
+*      400:
+*        description: Something went wrong
+*      500:
+*        description: Server error
+*/
+router.get("/update", productCtrl.updateProducts)
 
 module.exports = router;

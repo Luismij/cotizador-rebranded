@@ -54,6 +54,30 @@ const { verifyToken } = require('../middlewares/authJWT')
 
 /**
  * @swagger
+ * components:
+ *  schemas:
+ *    Discount:
+ *      type: object
+ *      properties:
+ *        outOfRangeDiscount:
+ *          type: number
+ *          description: Discount out of price range
+ *        ranges:
+ *          type: array
+ *          description: The user email
+ *      required:
+ *        - outOfRangeDiscount
+ *      example:
+ *        outOfRangeDiscount: 20
+ *        ranges: [
+ *                  min: 1000000,
+ *                  max: 1999999,
+ *                  discount: 4,
+ *                ]
+ */
+
+/**
+ * @swagger
  * /user/signup:
  *  post:
  *    summary: Create a new user
@@ -79,7 +103,7 @@ router.post("/signup", userCtrl.signUp)
  * @swagger
  * /user/:
  *  put:
- *    summary: Create a new user
+ *    summary: Edit a user
  *    tags: [User]
  *    requestBody:
  *      required: true
@@ -155,5 +179,28 @@ router.post("/login", userCtrl.logIn)
  *        description: Server error
  */
 router.get("/loginjwt", [verifyToken, userCtrl.logInJWT])
+
+/**
+ * @swagger
+ * /user/discount:
+ *  put:
+ *    summary: Edit discount of a user
+ *    tags: [User]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/Discount'
+ *    responses:
+ *      200:
+ *        description: New user created
+ *      400:
+ *        description: Something went wrong
+ *      500:
+ *        description: Server error
+ */
+ router.put("/discount", [verifyToken, userCtrl.editDiscount])
 
 module.exports = router;

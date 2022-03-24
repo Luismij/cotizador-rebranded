@@ -1,13 +1,20 @@
 const { Schema, model } = require('mongoose')
 
 const ProductSchema = new Schema({
-  id: {
-    type: Number,
+  sku: {
+    type: String,
+    unique: true
   },
-  internalComment: {
+  name: {
     type: String,
   },
-  sku: {
+  resume: {
+    type: String,
+  },
+  keywords: {
+    type: String,
+  },
+  description: {
     type: String,
   },
   prices: [
@@ -23,12 +30,6 @@ const ProductSchema = new Schema({
   ],
   photo: {
     type: String
-  },
-  categoryId: {
-    type: Number,
-  },
-  description: {
-    type: String,
   }
 },
   {
