@@ -3,6 +3,7 @@ const { secretJWT } = require('../config')
 const bcrypt = require('bcryptjs');
 const checkParams = require('../utils/checkParams')
 const User = require('../models/User')
+const fs = require('fs');
 
 /**
  * Function that allows to create a new user.
@@ -10,13 +11,21 @@ const User = require('../models/User')
  */
 const signUp = async (req, res) => {
   const { password } = req.body
+  const { file } = req
 
   const correct = checkParams(['name', 'email', 'password'], req.body)
   if (!correct) return res.status(400).json({ message: 'Missing parameters' })
-
   const hash = await bcrypt.hash(password, 10);
   try {
     const newUser = new User({ ...req.body, password: hash })
+    if (file) {
+      let extension = file.filename.split('.')
+      extension = extension[extension.length - 1]
+      fs.rename(`./src/uploads/${file.filename}`, `./src/uploads/${newUser._id.toString()}.${extension}`, (err) => {
+        if (err) throw err;
+      })
+      newUser.logo = `${newUser._id.toString()}.${extension}`
+    }
     await newUser.save()
     return res.status(200).json({ message: 'User created!' })
   } catch (error) {
@@ -67,10 +76,19 @@ const logInJWT = async (req, res) => {
  * @returns message
  */
 const editUser = async (req, res) => {
-  const user = req.body
+  let user = req.body
   const { userId } = req
+  const { file } = req
 
   try {
+    if (file) {
+      let extension = file.filename.split('.')
+      extension = extension[extension.length - 1]
+      fs.rename(`./src/uploads/${file.filename}`, `./src/uploads/${userId}.${extension}`, (err) => {
+        if (err) throw err;
+      })
+      user.logo = `${userId}.${extension}`
+    }
     const { modifiedCount } = await User.updateOne({ _id: userId }, { $set: user }).exec()
     if (modifiedCount === 0) return res.status(400).json({ message: 'User not found' })
     return res.status(200).json({ message: 'User successfully edited' })

@@ -36,6 +36,7 @@ const UserSchema = new Schema({
     outOfRangeDiscount: {
       type: Number,
       required: true,
+      default: 0
     },
     ranges: [
       {

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const userCtrl = require('../controllers/user.controller')
 const { verifyToken } = require('../middlewares/authJWT')
+const uploadImage = require('../middlewares/multer')
 
 /**
  * @swagger
@@ -23,7 +24,7 @@ const { verifyToken } = require('../middlewares/authJWT')
  *          type: string
  *          description: The user web address
  *        logo:
- *          type: string
+ *          type: file
  *          description: The user logo
  *        nit:
  *          type: number
@@ -85,7 +86,7 @@ const { verifyToken } = require('../middlewares/authJWT')
  *    requestBody:
  *      required: true
  *      content:
- *        application/json:
+ *        multipart/form-data:
  *          schema:
  *            type: object
  *            $ref: '#/components/schemas/User'
@@ -97,7 +98,7 @@ const { verifyToken } = require('../middlewares/authJWT')
  *      500:
  *        description: Server error
  */
-router.post("/signup", userCtrl.signUp)
+router.post("/signup", [uploadImage.single('logo'), userCtrl.signUp])
 
 /**
  * @swagger
@@ -108,7 +109,7 @@ router.post("/signup", userCtrl.signUp)
  *    requestBody:
  *      required: true
  *      content:
- *        application/json:
+ *        multipart/form-data:
  *          schema:
  *            type: object
  *            $ref: '#/components/schemas/User'
@@ -120,7 +121,7 @@ router.post("/signup", userCtrl.signUp)
  *      500:
  *        description: Server error
  */
-router.put("/", [verifyToken, userCtrl.editUser])
+router.put("/", [verifyToken, uploadImage.single('logo'), userCtrl.editUser])
 
 /**
  * @swagger
@@ -201,6 +202,6 @@ router.get("/loginjwt", [verifyToken, userCtrl.logInJWT])
  *      500:
  *        description: Server error
  */
- router.put("/discount", [verifyToken, userCtrl.editDiscount])
+router.put("/discount", [verifyToken, userCtrl.editDiscount])
 
 module.exports = router;

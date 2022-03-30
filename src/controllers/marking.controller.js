@@ -13,7 +13,7 @@ const createMarking = async (req, res) => {
   const correct = checkParams(['name', 'inks'], req.body)
   if (!correct) return res.status(400).json({ message: 'Missing parameters' })
   for (const ink of inks) {
-    const correct1 = checkParams(['minTotalPrice', 'outOfRangePrice', 'ranges'], ink)
+    const correct1 = checkParams(['name', 'minTotalPrice', 'outOfRangePrice', 'ranges'], ink)
     if (!correct1) return res.status(400).json({ message: 'Missing parameters' })
     for (const range of ink.ranges) {
       const correct2 = checkParams(['min', 'max', 'price'], range)

@@ -12,6 +12,10 @@ const MarkingSchema = new Schema({
   },
   inks: [
     {
+      name: {
+        type: String,
+        required: true
+      },
       minTotalPrice: {
         type: Number,
         required: true

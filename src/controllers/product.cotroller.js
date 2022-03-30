@@ -50,6 +50,20 @@ const updateProducts = async (req, res) => {
 }
 
 /**
+ * Function that allows to create a new product.
+ * @returns {Object} Success message or error message
+ */
+const createProduct = async (req, res) => {
+  try {
+    const newProduct = new Product(req.body)
+    await newProduct.save()
+    return res.status(200).json({message: 'Product created successfully'})
+  } catch (error) {
+    return res.status(400).json({ message: 'Something went wrong' })
+  }
+}
+
+/**
  * Function that allows to create a new customer.
  * @returns {Object} Success message or error message
  */
@@ -62,7 +76,26 @@ const getProducts = async (req, res) => {
   }
 }
 
+/**
+ * Function that to get the stock of a product by its reference.
+ * @returns {Array} Stock of a product
+ */
+const getStock = async (req, res) => {
+  const { reference } = req.params
+
+  try {
+    const httpsAgent = new HttpsProxyAgent({ host: '154.9.32.21', port: '8800' })
+    const stock = (await axios.get(`https://api.cataprom.com/rest/stock/${reference}`, { httpsAgent })).data.resultado
+    return res.status(200).json(stock)
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: 'Something went wrong' })
+  }
+}
+
 module.exports = {
+  createProduct,
   getProducts,
-  updateProducts
+  updateProducts,
+  getStock
 }

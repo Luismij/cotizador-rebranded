@@ -29,6 +29,11 @@ const { verifyToken } = require('../middlewares/authJWT')
  */
 
 /**
+ * 
+ */
+ router.post("/", [verifyToken, productCtrl.createProduct])
+
+/**
  * @swagger
  * /product/:
  *  get:
@@ -50,6 +55,35 @@ const { verifyToken } = require('../middlewares/authJWT')
  *        description: Server error
  */
 router.get("/", [verifyToken, productCtrl.getProducts])
+
+/**
+ * @swagger
+ * /product/stock/{reference}:
+ *  get:
+ *    summary: Get products stock
+ *    tags: [Product]
+ *    parameters:
+ *    - in: header
+ *      name: jwt-token
+ *      schema:
+ *        type: string
+ *        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ1OTIyNTY4fQ.rkIDY2KI-n0VJ8d77cyMA75SYKhNxQleNo1Stfyxhyc
+ *      required: true
+ *    - in: path
+ *      name: reference
+ *      schema:
+ *        type: string
+ *        example: 22-01
+ *      required: true
+ *    responses:
+ *      200:
+ *        description: Get products stock
+ *      400:
+ *        description: Something went wrong
+ *      500:
+ *        description: Server error
+ */
+ router.get("/stock/:reference", [verifyToken, productCtrl.getStock])
 
 /**
 * @swagger
