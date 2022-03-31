@@ -6,9 +6,12 @@ const { port, swaggerSpec } = require('./config')
 const routes = require('./routes')
 const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
+const fs = require('fs')
 
 require('./utils/updateProducts')
 require('./utils/database')
+
+fs.mkdir('./uploads', (err)=> console.log(err))
 
 const app = express()
 
