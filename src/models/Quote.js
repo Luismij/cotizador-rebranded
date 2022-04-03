@@ -6,6 +6,11 @@ const QuoteSchema = new Schema({
     ref: 'User',
     required: true
   },
+  quoteNumber: {
+    type: Number,
+    required: true,
+    default: 0
+  },
   customer: {
     type: Object,
     required: true

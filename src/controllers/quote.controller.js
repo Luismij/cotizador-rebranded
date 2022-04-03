@@ -1,5 +1,5 @@
 const Quote = require('../models/Quote');
-const axios = require('axios').default
+const User = require('../models/User');
 
 /**
  * Function that allows to create a new quote.
@@ -8,10 +8,12 @@ const axios = require('axios').default
 const createQuote = async (req, res) => {
   const { userId } = req
 
-  console.log(req.body);
   try {
-    const newQuote = new Quote({ ...req.body, userId })
+    const quoteNumber = (await User.findById(userId)).quoteNumber
+    let newQuote = new Quote({ ...req.body, userId })
+    newQuote.quoteNumber = quoteNumber
     await newQuote.save()
+    await User.updateOne({ _id: userId }, { $set: { quoteNumber: quoteNumber + 1 } })
     return res.status(200).json({ message: 'Quote created successfully' })
   } catch (error) {
     console.log(error);

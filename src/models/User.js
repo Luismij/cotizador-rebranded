@@ -35,6 +35,11 @@ const UserSchema = new Schema({
   phone: {
     type: Number,
   },
+  quoteNumber: {
+    type: Number,
+    required: true,
+    default: 0
+  },
   discount: {
     outOfRangeDiscount: {
       type: Number,
