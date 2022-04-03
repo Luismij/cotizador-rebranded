@@ -3,6 +3,7 @@ const customer = require('./routes/customer.routes')
 const marking = require('./routes/marking.routes')
 const product = require('./routes/product.routes')
 const image = require('./routes/image.routes')
+const quote = require('./routes/quote.routes')
 
 const routes = (app) => {
   app.use('/user', user)
@@ -10,6 +11,7 @@ const routes = (app) => {
   app.use('/marking', marking)
   app.use('/product', product)
   app.use('/image', image)
+  app.use('/quote', quote)
 }
 
 module.exports = routes;

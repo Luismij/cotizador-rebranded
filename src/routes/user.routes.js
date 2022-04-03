@@ -26,6 +26,9 @@ const uploadImage = require('../middlewares/multer')
  *        logo:
  *          type: file
  *          description: The user logo
+ *        logo2:
+ *          type: file
+ *          description: The user logo2
  *        nit:
  *          type: number
  *          description: The user nit
@@ -98,7 +101,7 @@ const uploadImage = require('../middlewares/multer')
  *      500:
  *        description: Server error
  */
-router.post("/signup", [uploadImage.single('logo'), userCtrl.signUp])
+router.post("/signup", [uploadImage.fields([{ name: 'logo', maxCount: 1 }, { name: 'logo2', maxCount: 1 }]), userCtrl.signUp])
 
 /**
  * @swagger
@@ -121,7 +124,7 @@ router.post("/signup", [uploadImage.single('logo'), userCtrl.signUp])
  *      500:
  *        description: Server error
  */
-router.put("/", [verifyToken, uploadImage.single('logo'), userCtrl.editUser])
+router.put("/", [verifyToken, uploadImage.fields([{ name: 'logo', maxCount: 1 }, { name: 'logo2', maxCount: 1 }]), userCtrl.editUser])
 
 /**
  * @swagger

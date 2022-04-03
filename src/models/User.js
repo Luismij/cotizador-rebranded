@@ -20,6 +20,9 @@ const UserSchema = new Schema({
   logo: {
     type: String,
   },
+  logo2: {
+    type: String,
+  },
   nit: {
     type: Number,
   },

@@ -80,8 +80,7 @@ const editMarking = async (req, res) => {
     }
   }
   try {
-    const result = await Marking.updateOne({ userId, _id }, req.body).exec()
-    console.log(result);
+    await Marking.updateOne({ userId, _id }, req.body).exec()
     return res.status(200).json({ message: 'Marking updated successfully' })
   } catch (error) {
     return res.status(400).json({ message: 'Something went wrong', error })
