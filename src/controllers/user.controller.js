@@ -11,7 +11,7 @@ const fs = require('fs');
  */
 const signUp = async (req, res) => {
   const { password } = req.body
-  const { file } = req
+  const { files } = req
 
   const correct = checkParams(['name', 'email', 'password'], req.body)
   if (!correct) return res.status(400).json({ message: 'Missing parameters' })
