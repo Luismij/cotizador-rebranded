@@ -6,13 +6,13 @@ const _ = require('lodash')
 const updateProducts = async (req, res) => {
   try {
     await Product.deleteMany({})
-    const httpsAgent = new HttpsProxyAgent({ host: '154.9.32.21', port: '8800' })
-    const categories = (await axios.get('https://api.cataprom.com/rest/categorias/', { httpsAgent })).data.resultado
+    //const httpsAgent = new HttpsProxyAgent({ host: '154.9.32.21', port: '8800' })
+    const categories = (await axios.get('https://api.cataprom.com/rest/categorias/')).data.resultado
     let products = []
     for (const category of categories) {
       const addProducts = async () => {
         try {
-          const productsOfCategory = (await axios.get(`https://api.cataprom.com/rest/categorias/${category.id}/productos`, { httpsAgent })).data.resultado
+          const productsOfCategory = (await axios.get(`https://api.cataprom.com/rest/categorias/${category.id}/productos`)).data.resultado
           products = products.concat(productsOfCategory)
         } catch (error) {
           await addProducts()
@@ -84,8 +84,8 @@ const getStock = async (req, res) => {
   const { reference } = req.params
 
   try {
-    const httpsAgent = new HttpsProxyAgent({ host: '154.9.32.21', port: '8800' })
-    const stock = (await axios.get(`https://api.cataprom.com/rest/stock/${reference}`, { httpsAgent })).data.resultado
+    //const httpsAgent = new HttpsProxyAgent({ host: '154.9.32.21', port: '8800' })
+    const stock = (await axios.get(`https://api.cataprom.com/rest/stock/${reference}`)).data.resultado
     return res.status(200).json(stock)
   } catch (error) {
     console.log(error);

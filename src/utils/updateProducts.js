@@ -8,13 +8,13 @@ const updateProducts = async () => {
   try {
     console.log('Actualizando productos');
     await Product.deleteMany({})
-    const httpsAgent = new HttpsProxyAgent({ host: '154.9.32.21', port: '8800' })
-    const categories = (await axios.get('https://api.cataprom.com/rest/categorias/', { httpsAgent })).data.resultado
+    //const httpsAgent = new HttpsProxyAgent({ host: '154.9.32.21', port: '8800' })
+    const categories = (await axios.get('https://api.cataprom.com/rest/categorias/')).data.resultado
     let products = []
     for (const category of categories) {
       const addProducts = async () => {
         try {
-          const productsOfCategory = (await axios.get(`https://api.cataprom.com/rest/categorias/${category.id}/productos`, { httpsAgent })).data.resultado
+          const productsOfCategory = (await axios.get(`https://api.cataprom.com/rest/categorias/${category.id}/productos`)).data.resultado
           products = products.concat(productsOfCategory)
         } catch (error) {
           await addProducts()
