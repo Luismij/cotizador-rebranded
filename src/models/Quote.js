@@ -31,6 +31,10 @@ const QuoteSchema = new Schema({
     type: String,
     required: false
   },
+  generalObservations: {
+    type: String,
+    required: false
+  },
   products: [{
     price: {
       type: Number,
