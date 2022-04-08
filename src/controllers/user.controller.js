@@ -118,27 +118,11 @@ const editUser = async (req, res) => {
   }
 }
 
-/**
- * Function that allows to edit the discounts of a user
- * @returns message
- */
-const editDiscount = async (req, res) => {
-  const discount = req.body
-  const { userId } = req
 
-  try {
-    const user = await User.findOneAndUpdate({ _id: userId }, { $set: { discount } }).exec()
-    return res.status(200).json(user)
-  } catch (error) {
-    console.error(error);
-    return res.status(400).json({ message: 'Something went wrong' })
-  }
-}
 
 module.exports = {
   signUp,
   logIn,
   logInJWT,
-  editUser,
-  editDiscount
+  editUser
 }

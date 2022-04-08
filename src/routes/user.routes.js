@@ -184,27 +184,5 @@ router.post("/login", userCtrl.logIn)
  */
 router.get("/loginjwt", [verifyToken, userCtrl.logInJWT])
 
-/**
- * @swagger
- * /user/discount:
- *  put:
- *    summary: Edit discount of a user
- *    tags: [User]
- *    requestBody:
- *      required: true
- *      content:
- *        application/json:
- *          schema:
- *            type: object
- *            $ref: '#/components/schemas/Discount'
- *    responses:
- *      200:
- *        description: New user created
- *      400:
- *        description: Something went wrong
- *      500:
- *        description: Server error
- */
-router.put("/discount", [verifyToken, userCtrl.editDiscount])
 
 module.exports = router;

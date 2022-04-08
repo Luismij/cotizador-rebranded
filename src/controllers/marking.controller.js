@@ -37,7 +37,7 @@ const getMarkings = async (req, res) => {
   const { userId } = req
 
   try {
-    const markings = await Marking.find({ userId }).exec()
+    const markings = await Marking.find({ }).exec()
     return res.status(200).json(markings)
   } catch (error) {
     return res.status(400).json({ message: 'Something went wrong', error })
@@ -53,7 +53,7 @@ const getMarking = async (req, res) => {
   const { id } = req.params
 
   try {
-    const marking = await Marking.findOne({ userId, _id: id }).exec()
+    const marking = await Marking.findById(id).exec()
     return res.status(200).json(marking)
   } catch (error) {
     return res.status(400).json({ message: 'Something went wrong', error })
@@ -80,7 +80,7 @@ const editMarking = async (req, res) => {
     }
   }
   try {
-    await Marking.updateOne({ userId, _id }, req.body).exec()
+    await Marking.updateOne({ _id }, req.body).exec()
     return res.status(200).json({ message: 'Marking updated successfully' })
   } catch (error) {
     return res.status(400).json({ message: 'Something went wrong', error })
@@ -96,7 +96,7 @@ const deleteMarking = async (req, res) => {
   const { id } = req.params
 
   try {
-    const result = await Marking.deleteOne({ _id: id, userId }).exec()
+    const result = await Marking.deleteOne({ _id: id }).exec()
     if (result.deletedCount === 0) return res.status(400).json({ message: 'Marking not found' })
     return res.status(200).json({ message: 'Marking removed successfully', result })
   } catch (error) {

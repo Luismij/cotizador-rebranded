@@ -4,6 +4,7 @@ const marking = require('./routes/marking.routes')
 const product = require('./routes/product.routes')
 const image = require('./routes/image.routes')
 const quote = require('./routes/quote.routes')
+const discount = require('./routes/discount.routes')
 
 const routes = (app) => {
   app.use('/user', user)
@@ -12,6 +13,7 @@ const routes = (app) => {
   app.use('/product', product)
   app.use('/image', image)
   app.use('/quote', quote)
+  app.use('/discount', discount)
 }
 
 module.exports = routes;
