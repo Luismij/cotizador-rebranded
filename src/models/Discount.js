@@ -1,9 +1,10 @@
 const { Schema, model } = require('mongoose')
 
 const DiscountSchema = new Schema({
-  _id:{
+  _id: {
     type: Number,
-    required:true,
+    required: true,
+    unique: true,
     default: 1
   },
   outOfRangeDiscount: {

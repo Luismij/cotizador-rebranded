@@ -17,7 +17,9 @@ const signUp = async (req, res) => {
   if (!correct) return res.status(400).json({ message: 'Missing parameters' })
   const hash = await bcrypt.hash(password, 10);
   try {
-    const newUser = new User({ ...req.body, password: hash })
+    let aux = { ...req.body, password: hash }
+    aux.email = aux.email.toLowerCase()
+    const newUser = new User(aux)
     if (files.logo) {
       const file = files.logo[0]
       let extension = file.filename.split('.')
@@ -48,12 +50,13 @@ const signUp = async (req, res) => {
  * @returns {Object} user info and jwt or error message
  */
 const logIn = async (req, res) => {
-  const { email, password } = req.body
+  let { email, password } = req.body
 
   const correct = checkParams(['email', 'password'], req.body)
   if (!correct) return res.status(400).json({ message: 'Missing parameters' })
 
   try {
+    email = email.toLowerCase()
     const user = await User.findOne({ email }).exec()
     if (!user) return res.status(400).json({ message: 'Wrong email' })
     const match = await bcrypt.compare(password, user.password)

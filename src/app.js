@@ -6,7 +6,7 @@ const { port, swaggerSpec } = require('./config')
 const routes = require('./routes')
 const swaggerUI = require('swagger-ui-express')
 const swaggerJsDoc = require('swagger-jsdoc')
-const { setup } = require('./setup')
+const fs = require('fs')
 
 require('./utils/updateProducts')
 require('./utils/database')
@@ -15,7 +15,8 @@ const app = express()
 
 const server = http.createServer(app)
 
-//setup()
+fs.mkdir('./uploads', (err) => console.log(err))
+
 
 app.use(cors())
 app.use(express.json())

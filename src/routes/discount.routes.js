@@ -5,6 +5,30 @@ const { verifyToken } = require('../middlewares/authJWT')
 
 /**
  * @swagger
+ * components:
+ *  schemas:
+ *    Discount:
+ *      type: object
+ *      properties:
+ *        outOfRangeDiscount:
+ *          type: number
+ *          description: Discount out of price range
+ *        ranges:
+ *          type: array
+ *          description: The user email
+ *      required:
+ *        - outOfRangeDiscount
+ *      example:
+ *        outOfRangeDiscount: 20
+ *        ranges: [
+ *                  min: 1000000,
+ *                  max: 1999999,
+ *                  discount: 4,
+ *                ]
+ */
+
+/**
+ * @swagger
  * /discount:
  *  get:
  *    summary: Get discount
@@ -24,7 +48,7 @@ const { verifyToken } = require('../middlewares/authJWT')
  *      500:
  *        description: Server error
  */
-router.get("/discount", [verifyToken, discountCtrl.editDiscount])
+router.get("/", [verifyToken, discountCtrl.getDiscount])
 
 /**
  * @swagger
@@ -54,6 +78,6 @@ router.get("/discount", [verifyToken, discountCtrl.editDiscount])
  *      500:
  *        description: Server error
  */
-router.put("/discount", [verifyToken, discountCtrl.editDiscount])
+router.put("/", [verifyToken, discountCtrl.editDiscount])
 
 module.exports = router;

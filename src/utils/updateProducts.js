@@ -7,7 +7,6 @@ const HttpsProxyAgent = require("https-proxy-agent")
 const updateProducts = async () => {
   try {
     console.log('Actualizando productos');
-    await Product.deleteMany({})
     //const httpsAgent = new HttpsProxyAgent({ host: '154.9.32.21', port: '8800' })
     const categories = (await axios.get('https://api.cataprom.com/rest/categorias/')).data.resultado
     let products = []
@@ -44,6 +43,7 @@ const updateProducts = async () => {
       return product
     })
     finalListOfProducts = _.uniqBy(finalListOfProducts, (p) => p.sku)
+    await Product.deleteMany({})
     await Product.insertMany(finalListOfProducts)
     console.log('Actualizacion de productos completa');
   } catch (error) {

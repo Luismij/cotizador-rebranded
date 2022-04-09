@@ -25,7 +25,7 @@ const editDiscount = async (req, res) => {
   const { userId } = req
 
   try {
-    const resDiscount = await Discount.findOneAndUpdate({ _id: 1 }, { $set: { discount } }).exec()
+    const resDiscount = await Discount.updateOne({ _id: 1 }, discount).exec()
     return res.status(200).json(resDiscount)
   } catch (error) {
     console.error(error);
@@ -35,4 +35,5 @@ const editDiscount = async (req, res) => {
 
 module.exports = {
   editDiscount,
+  getDiscount
 }

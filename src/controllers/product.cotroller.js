@@ -5,7 +5,6 @@ const _ = require('lodash')
 
 const updateProducts = async (req, res) => {
   try {
-    await Product.deleteMany({})
     //const httpsAgent = new HttpsProxyAgent({ host: '154.9.32.21', port: '8800' })
     const categories = (await axios.get('https://api.cataprom.com/rest/categorias/')).data.resultado
     let products = []
@@ -42,6 +41,7 @@ const updateProducts = async (req, res) => {
       return product
     })
     finalListOfProducts = _.uniqBy(finalListOfProducts, (p) => p.sku)
+    await Product.deleteMany({})
     const result = await Product.insertMany(finalListOfProducts)
     return res.status(200).json(result)
   } catch (error) {
