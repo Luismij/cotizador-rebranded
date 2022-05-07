@@ -102,7 +102,7 @@ const editUser = async (req, res) => {
         if (err) throw err;
       })
       user.logo = `${userId}.${extension}`
-    }
+    } else delete user.logo
     if (files.logo2) {
       const file = files.logo2[0]
       let extension = file.filename.split('.')
@@ -111,7 +111,7 @@ const editUser = async (req, res) => {
         if (err) throw err;
       })
       user.logo2 = `${userId}2.${extension}`
-    }
+    } else delete user.logo2
     const { modifiedCount } = await User.updateOne({ _id: userId }, { $set: user }).exec()
     if (modifiedCount === 0) return res.status(400).json({ message: 'User not found' })
     return res.status(200).json({ message: 'User successfully edited' })

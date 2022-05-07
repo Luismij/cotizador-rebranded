@@ -48,16 +48,6 @@ const QuoteSchema = new Schema({
       type: String,
       required: false
     },
-    freight: {
-      type: Number,
-      required: true,
-      default: 0
-    },
-    profit: {
-      type: Number,
-      required: true,
-      default: 0
-    },
     discount: {
       type: Boolean,
       required: true,
@@ -100,6 +90,16 @@ const QuoteSchema = new Schema({
     },
     markings: [
       {
+        freight: {
+          type: Number,
+          required: true,
+          default: 0
+        },
+        profit: {
+          type: Number,
+          required: true,
+          default: 0
+        },
         netPrice: {
           type: Number,
           require: true,

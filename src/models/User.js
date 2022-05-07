@@ -16,29 +16,44 @@ const UserSchema = new Schema({
   },
   webAddress: {
     type: String,
+    required: false
   },
   logo: {
     type: String,
+    required: false
   },
   logo2: {
     type: String,
+    required: false
   },
   nit: {
     type: Number,
+    required: false
   },
   address: {
     type: String,
+    required: false
   },
   businessName: {
     type: String,
+    required: false
   },
   phone: {
     type: Number,
+    required: false
   },
   quoteNumber: {
     type: Number,
     required: true,
     default: 0
+  },
+  mainColor: {
+    type: String,
+    required: false
+  },
+  secondaryColor: {
+    type: String,
+    required: false
   },
   discount: {
     outOfRangeDiscount: {
