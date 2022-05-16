@@ -57,7 +57,7 @@ const createProduct = async (req, res) => {
   try {
     const newProduct = new Product(req.body)
     await newProduct.save()
-    return res.status(200).json({message: 'Product created successfully'})
+    return res.status(200).json({ message: 'Product created successfully' })
   } catch (error) {
     return res.status(400).json({ message: 'Something went wrong' })
   }
@@ -70,6 +70,21 @@ const createProduct = async (req, res) => {
 const getProducts = async (req, res) => {
   try {
     const products = await Product.find()
+    return res.status(200).json(products)
+  } catch (error) {
+    return res.status(400).json({ message: 'Something went wrong' })
+  }
+}
+
+/**
+ * Function that allows to get a product.
+ * @returns {Object} Success message or error message
+ */
+const getProduct = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const products = await Product.findById(id)
     return res.status(200).json(products)
   } catch (error) {
     return res.status(400).json({ message: 'Something went wrong' })
@@ -93,9 +108,43 @@ const getStock = async (req, res) => {
   }
 }
 
+/**
+ * Function that allows to edit a product.
+ * @returns {Object} Success message or error message
+ */
+ const editProduct = async (req, res) => {
+  const { _id } = req.body
+
+  try {
+    await Product.updateOne({ _id }, req.body).exec()
+    return res.status(200).json({ message: 'Product updated successfully' })
+  } catch (error) {
+    return res.status(400).json({ message: 'Something went wrong', error })
+  }
+}
+
+/**
+ * Function that allows to get the products of a user.
+ * @returns {Array || Object} Array of products or error message
+ */
+const deleteProduct = async (req, res) => {
+  const { id } = req.params
+
+  try {
+    const result = await Product.deleteOne({ _id: id }).exec()
+    if (result.deletedCount === 0) return res.status(400).json({ message: 'Product not found' })
+    return res.status(200).json({ message: 'Product removed successfully', result })
+  } catch (error) {
+    return res.status(400).json({ message: 'Something went wrong', error })
+  }
+}
+
 module.exports = {
   createProduct,
   getProducts,
+  getProduct,
+  editProduct,
+  deleteProduct,
   updateProducts,
   getStock
 }

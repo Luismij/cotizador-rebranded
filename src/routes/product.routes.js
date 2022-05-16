@@ -58,6 +58,29 @@ router.get("/", [verifyToken, productCtrl.getProducts])
 
 /**
  * @swagger
+ * /product/{id}:
+ *  get:
+ *    summary: Get products list
+ *    tags: [Product]
+ *    parameters:
+ *    - in: header
+ *      name: jwt-token
+ *      schema:
+ *        type: string
+ *        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ1OTIyNTY4fQ.rkIDY2KI-n0VJ8d77cyMA75SYKhNxQleNo1Stfyxhyc
+ *      required: true
+ *    responses:
+ *      200:
+ *        description: Get products list
+ *      400:
+ *        description: Something went wrong
+ *      500:
+ *        description: Server error
+ */
+ router.get("/:id", [verifyToken, productCtrl.getProduct])
+
+/**
+ * @swagger
  * /product/stock/{reference}:
  *  get:
  *    summary: Get products stock
@@ -100,5 +123,65 @@ router.get("/", [verifyToken, productCtrl.getProducts])
 *        description: Server error
 */
 router.get("/update", productCtrl.updateProducts)
+
+/**
+ * @swagger
+ * /product/:
+ *  put:
+ *    summary: Update a product
+ *    tags: [Product]
+ *    requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            type: object
+ *            $ref: '#/components/schemas/Product'
+ *    parameters:
+ *    - in: header
+ *      name: jwt-token
+ *      schema:
+ *        type: string
+ *        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ1OTIyNTY4fQ.rkIDY2KI-n0VJ8d77cyMA75SYKhNxQleNo1Stfyxhyc
+ *      required: true
+ *    responses:
+ *      200:
+ *        description: Product edited successfully
+ *      400:
+ *        description: Something went wrong
+ *      500:
+ *        description: Server error
+ */
+ router.put("/", [verifyToken, productCtrl.editProduct])
+
+
+ /**
+ * @swagger
+ * /product/{id}:
+ *  delete:
+ *    summary: Delete a product
+ *    tags: [Product]
+ *    parameters:
+ *    - in: header
+ *      name: jwt-token
+ *      schema:
+ *        type: string
+ *        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ1OTIyNTY4fQ.rkIDY2KI-n0VJ8d77cyMA75SYKhNxQleNo1Stfyxhyc
+ *      required: true
+ *    - in: path
+ *      name: id
+ *      schema:
+ *        type: string
+ *        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+ *      required: true
+ *    responses:
+ *      200:
+ *        description: New product created
+ *      400:
+ *        description: Something went wrong
+ *      500:
+ *        description: Server error
+ */
+ router.delete("/:id", [verifyToken, productCtrl.deleteProduct])
 
 module.exports = router;

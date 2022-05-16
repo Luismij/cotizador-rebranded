@@ -21,6 +21,11 @@ const ProductSchema = new Schema({
   description: {
     type: String,
   },
+  custom: {
+    type: Boolean,
+    required: true,
+    default: false
+  },
   prices: [
     {
       price: {
