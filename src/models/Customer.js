@@ -1,14 +1,18 @@
 const { Schema, model } = require('mongoose')
 
 const CustomerSchema = new Schema({
-  userId:{
+  userId: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: true
   },
+  businessName: {
+    type: String,
+    required: true
+  },
   name: {
     type: String,
-    required: true,
+    required: false,
   },
   email: {
     type: String,
@@ -20,12 +24,9 @@ const CustomerSchema = new Schema({
     type: String,
   },
   nit: {
-    type: Number,
-  },
-  address: {
     type: String,
   },
-  businessName: {
+  address: {
     type: String,
   },
   phone: {
