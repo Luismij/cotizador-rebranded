@@ -1,10 +1,6 @@
 const { Schema, model } = require('mongoose')
 
 const ProductSchema = new Schema({
-  /* userId: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-  }, */
   sku: {
     type: String,
     unique: true

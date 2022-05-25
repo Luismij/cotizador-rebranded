@@ -38,12 +38,13 @@ const updateProducts = async () => {
         keywords: p.palabrasClaveSeo,
         description: p.descripcionProducto,
         photo: p.imageUrl,
+        custom: false,
         prices
       }
       return product
     })
     finalListOfProducts = _.uniqBy(finalListOfProducts, (p) => p.sku)
-    await Product.deleteMany({})
+    await Product.deleteMany({ custom: false })
     await Product.insertMany(finalListOfProducts)
     console.log('Actualizacion de productos completa');
   } catch (error) {
